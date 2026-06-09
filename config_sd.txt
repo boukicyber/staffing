@@ -1,0 +1,9 @@
+CS:Adelouij,Auredeva,Diakhelh,Ernancaj,Ginoif,Hanimich,Hayirhal,Hichema,Leyukahr,Margoulq,Mohlamec,Mohsanse,Mureusta,Ngametho,Nguelejw,Rbelkham,Salbouar,Sjomarce,Tarddavi,Wahabf,Zakadaou
+Vareo:Adelouij,Auredeva,Diakhelh,Ernancaj,Ginoif,Hanimich,Hayirhal,Hichema,Leyukahr,Margoulq,Mohlamec,Mohsanse,Mureusta,Ngametho,Nguelejw,Rbelkham,Salbouar,Sjomarce,Tarddavi,Wahabf,Zakadaou
+Finalize:Adelouij,Auredeva,Diakhelh,Ernancaj,Ginoif,Hanimich,Hayirhal,Hichema,Leyukahr,Margoulq,Mohlamec,Mohsanse,Mureusta,Ngametho,Nguelejw,Rbelkham,Salbouar,Sjomarce,Tarddavi,Wahabf,Zakadaou
+Lamination:Adelouij,Auredeva,Diakhelh,Ernancaj,Ginoif,Hanimich,Hayirhal,Hichema,Leyukahr,Margoulq,Mohlamec,Mohsanse,Mureusta,Ngametho,Nguelejw,Rbelkham,Salbouar,Sjomarce,Tarddavi,Wahabf,Zakadaou
+WS:Adelouij,Auredeva,Diakhelh,Ernancaj,Ginoif,Hanimich,Hayirhal,Hichema,Leyukahr,Margoulq,Mohlamec,Mohsanse,Mureusta,Ngametho,Nguelejw,Rbelkham,Salbouar,Sjomarce,Tarddavi,Wahabf,Zakadaou
+IX:Adelouij,Margoulq,Mohlamec,Ngametho,Salbouar,Wahabf,Zakadaou
+IJ:Leyukahr,Mohlamec,Mureusta,Nguelejw,Salbouar,Tarddavi
+PS:Adelouij,Hanimich,Hichema,Margoulq,Mohlamec,Mureusta
+QC:Diakhelh,Sjomarce

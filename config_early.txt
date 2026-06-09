@@ -1,0 +1,10 @@
+
+CS:Amaurad,Aslobile,Belasyri,Boissel,Brevetnb,Cacarlad,Caroniaf,Diarraka,Douarin,Fbarboux,Gibaltim,Guillafg,Marnac,Mbairikc,Motmari,Mozet,Rokalexy,Rolcid,Zermyria,Zezcorin
+Vareo:Amaurad,Aslobile,Belasyri,Boissel,Brevetnb,Cacarlad,Caroniaf,Diarraka,Douarin,Fbarboux,Gibaltim,Guillafg,Marnac,Mbairikc,Motmari,Mozet,Rokalexy,Rolcid,Zermyria,Zezcorin
+Finalize:Amaurad,Aslobile,Belasyri,Boissel,Brevetnb,Cacarlad,Caroniaf,Diarraka,Douarin,Fbarboux,Gibaltim,Guillafg,Marnac,Mbairikc,Motmari,Mozet,Rokalexy,Rolcid,Zermyria,Zezcorin
+Lamination:Amaurad,Aslobile,Belasyri,Boissel,Brevetnb,Cacarlad,Caroniaf,Diarraka,Douarin,Fbarboux,Gibaltim,Guillafg,Marnac,Mbairikc,Motmari,Mozet,Rokalexy,Rolcid,Zermyria,Zezcorin
+WS:Amaurad,Aslobile,Belasyri,Boissel,Brevetnb,Cacarlad,Caroniaf,Diarraka,Douarin,Fbarboux,Gibaltim,Guillafg,Marnac,Mbairikc,Motmari,Mozet,Rokalexy,Rolcid,Zermyria,Zezcorin
+IX:Cacarlad,Fbarboux,Gibaltim,Mbairikc,Zermyria,Zezcorin
+IJ:Fbarboux,Mbairikc,Mozet,Rokalexy
+PS:Cacarlad,Fbarboux,Mbairikc,Mozet,Rokalexy,Zermyria,Zezcorin
+QC:Aslobile,Belasyri,Diarraka,Douarin,Guillafg

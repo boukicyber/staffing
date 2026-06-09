@@ -1,0 +1,9 @@
+CS:Aaabbouc,Ainoukhe,Audeber,Diakf,Dmariamj,Ederyb,Elodchre,Fmicaell,Garreauv,Ianissib,Jodiallo,Maouacia,Ndblaise,Ngoulder,Nkahoara,Ousnajja,Pierrwix,Qdedonyo,Raylisc,Salfouss,Stmolokw,Vorlanpe,Yansamak,Zarkowzn,Zmanaima
+Vareo:Aaabbouc,Ainoukhe,Audeber,Diakf,Dmariamj,Ederyb,Elodchre,Fmicaell,Garreauv,Ianissib,Jodiallo,Maouacia,Ndblaise,Ngoulder,Nkahoara,Ousnajja,Pierrwix,Qdedonyo,Raylisc,Salfouss,Stmolokw,Vorlanpe,Yansamak,Zarkowzn,Zmanaima
+Finalize:Aaabbouc,Ainoukhe,Audeber,Diakf,Dmariamj,Ederyb,Elodchre,Fmicaell,Garreauv,Ianissib,Jodiallo,Maouacia,Ndblaise,Ngoulder,Nkahoara,Ousnajja,Pierrwix,Qdedonyo,Raylisc,Salfouss,Stmolokw,Vorlanpe,Yansamak,Zarkowzn,Zmanaima
+Lamination:Aaabbouc,Ainoukhe,Audeber,Diakf,Dmariamj,Ederyb,Elodchre,Fmicaell,Garreauv,Ianissib,Jodiallo,Maouacia,Ndblaise,Ngoulder,Nkahoara,Ousnajja,Pierrwix,Qdedonyo,Raylisc,Salfouss,Stmolokw,Vorlanpe,Yansamak,Zarkowzn,Zmanaima
+WS:Aaabbouc,Ainoukhe,Audeber,Diakf,Dmariamj,Ederyb,Elodchre,Fmicaell,Garreauv,Ianissib,Jodiallo,Maouacia,Ndblaise,Ngoulder,Nkahoara,Ousnajja,Pierrwix,Qdedonyo,Raylisc,Salfouss,Stmolokw,Vorlanpe,Yansamak,Zarkowzn,Zmanaima
+IX:Aaabbouc,Diakf,Garreauv,Ndblaise,Nkahoara,Pierrwix,Raylisc,Vorlanpe
+IJ:Aaabbouc,Elodchre,Nkahoara,Raylisc,Zarkowzn
+PS:Elodchre,Jodiallo,Ousnajja,Pierrwix,Raylisc,Yansamak
+QC:

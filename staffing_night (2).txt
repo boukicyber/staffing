@@ -1,0 +1,1211 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staffing Night – Liquid Glass v9.5</title>
+<style>
+:root {
+--bg-main-dark: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
+--bg-main-light: radial-gradient(circle at top, #e5e7eb 0, #f9fafb 40%, #e5e7eb 100%);
+--card-dark: rgba(15,23,42,0.96);
+--card-light: rgba(248,250,252,0.9);
+--border-dark: rgba(148,163,184,0.55);
+--border-light: rgba(148,163,184,0.45);
+--text-main-dark: #e5e7eb;
+--text-main-light: #111827;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+background: var(--bg-main-dark); color: var(--text-main-dark);
+padding: 18px; min-height: 100vh; font-size: 14px;
+transition: background 0.4s ease, color 0.4s ease;
+}
+body.theme-light { background: var(--bg-main-light); color: var(--text-main-light); }
+.container {
+max-width:1600px; margin:0 auto;
+background: radial-gradient(circle at top, rgba(15,23,42,0.96), rgba(15,23,42,0.92));
+border-radius:24px; box-shadow:0 24px 80px rgba(0,0,0,0.75);
+overflow:hidden; border:1px solid var(--border-dark);
+backdrop-filter:blur(22px); transition:background 0.4s ease, border-color 0.4s ease;
+}
+body.theme-light .container { background:radial-gradient(circle at top, rgba(248,250,252,0.96), rgba(241,245,249,0.96)); border-color:var(--border-light); }
+.header {
+background:linear-gradient(135deg, rgba(56,189,248,0.18), rgba(129,140,248,0.22));
+color:#f9fafb; padding:18px 22px;
+border-bottom:1px solid rgba(148,163,184,0.35);
+position:relative; overflow:hidden;
+}
+.header::before {
+content:""; position:absolute; inset:-40%;
+background:radial-gradient(circle at top left, rgba(96,165,250,0.35), transparent 55%), radial-gradient(circle at bottom right, rgba(129,140,248,0.25), transparent 55%);
+opacity:0.7; pointer-events:none;
+}
+.header-main { display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
+.header-title-block h1 { font-size:1.5em; margin-bottom:4px; letter-spacing:.06em; }
+.header-title-block p { font-size:0.85em; opacity:0.9; }
+.header-actions { display:flex; align-items:center; gap:10px; }
+.nav-btn {
+background:rgba(15,23,42,0.85); color:#e5e7eb; border-radius:999px;
+border:1px solid rgba(148,163,184,0.7); padding:7px 14px;
+font-size:0.8em; font-weight:500; display:flex; align-items:center; gap:6px;
+cursor:pointer; backdrop-filter:blur(18px); transition:all 0.2s;
+}
+.nav-btn:hover { transform:translateY(-1px); box-shadow:0 14px 35px rgba(15,23,42,0.95); }
+.theme-toggle {
+width:40px; height:22px; border-radius:999px; border:1px solid rgba(148,163,184,0.8);
+background:rgba(15,23,42,0.9); display:flex; align-items:center; padding:2px; cursor:pointer; position:relative;
+}
+.theme-toggle-thumb {
+width:18px; height:18px; border-radius:999px;
+background:linear-gradient(135deg,#facc15,#f97316);
+box-shadow:0 4px 10px rgba(0,0,0,0.4); transform:translateX(0); transition:transform 0.25s ease;
+}
+body.theme-light .theme-toggle-thumb { transform:translateX(16px); background:linear-gradient(135deg,#38bdf8,#6366f1); }
+.theme-toggle-icon { position:absolute; font-size:0.8em; }
+.theme-toggle-icon.sun { left:6px; }
+.theme-toggle-icon.moon { right:6px; }
+.content { padding:16px 18px 20px; }
+.dashboard { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; margin-bottom:16px; }
+.dashboard-card {
+position:relative; background:radial-gradient(circle at top left, rgba(30,64,175,0.35), rgba(15,23,42,0.96));
+border-radius:16px; border:1px solid rgba(129,140,248,0.55); padding:9px 10px; text-align:center;
+box-shadow:0 18px 40px rgba(15,23,42,0.9); backdrop-filter:blur(18px); overflow:hidden;
+transition:background 0.4s ease, border-color 0.4s ease;
+}
+body.theme-light .dashboard-card { background:radial-gradient(circle at top left, rgba(191,219,254,0.9), rgba(226,232,240,0.96)); border-color:rgba(129,140,248,0.7); }
+.dashboard-card h3 { color:#c7d2fe; font-size:0.7em; margin-bottom:4px; text-transform:uppercase; font-weight:600; letter-spacing:.12em; }
+body.theme-light .dashboard-card h3 { color:#4f46e5; }
+.dashboard-card .value { font-size:1.4em; font-weight:700; color:#f9fafb; }
+body.theme-light .dashboard-card .value { color:#111827; }
+.dashboard-card .label { font-size:0.65em; color:#9ca3af; margin-top:2px; }
+body.theme-light .dashboard-card .label { color:#6b7280; }
+.section {
+margin-bottom:14px; padding:12px 14px; background:var(--card-dark);
+border-radius:16px; border:1px solid var(--border-dark);
+backdrop-filter:blur(18px); transition:background 0.4s ease, border-color 0.4s ease;
+}
+body.theme-light .section { background:var(--card-light); border-color:var(--border-light); }
+.section h2 { color:#c7d2fe; margin-bottom:8px; font-size:0.95em; text-transform:uppercase; letter-spacing:.14em; }
+body.theme-light .section h2 { color:#4f46e5; }
+.form-group { margin-bottom:8px; }
+.form-group label { display:block; margin-bottom:3px; font-weight:600; color:#e5e7eb; font-size:0.8em; }
+body.theme-light .form-group label { color:#111827; }
+.form-group input, .form-group select {
+width:100%; padding:7px 10px; border-radius:999px;
+border:1px solid rgba(148,163,184,0.7); background:rgba(15,23,42,0.96);
+color:#f9fafb; font-size:0.88em; outline:none;
+}
+body.theme-light .form-group input, body.theme-light .form-group select { background:rgba(248,250,252,0.96); color:#111827; }
+.form-group input:focus, .form-group select:focus { border-color:#38bdf8; }
+.wip-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px; margin-top:8px; }
+.wip-card { background:var(--card-dark); padding:9px; border-radius:12px; border:1px solid rgba(129,140,248,0.6); }
+body.theme-light .wip-card { background:var(--card-light); border-color:rgba(129,140,248,0.8); }
+.wip-card h3 { color:#c7d2fe; margin-bottom:5px; font-size:0.85em; }
+body.theme-light .wip-card h3 { color:#4f46e5; }
+.wip-card input { width:100%; padding:6px 8px; border-radius:999px; border:1px solid rgba(129,140,248,0.7); background:rgba(15,23,42,0.96); color:#f9fafb; font-size:0.88em; outline:none; text-align:center; }
+body.theme-light .wip-card input { background:rgba(248,250,252,0.96); color:#111827; }
+.checkbox-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:6px; margin-top:8px; }
+.checkbox-item { display:flex; align-items:center; padding:6px 8px; background:var(--card-dark); border-radius:999px; border:1px solid rgba(148,163,184,0.6); transition:all 0.2s; }
+body.theme-light .checkbox-item { background:var(--card-light); border-color:rgba(148,163,184,0.8); }
+.checkbox-item:hover { border-color:#38bdf8; }
+.checkbox-item input[type="checkbox"] { width:15px; height:15px; margin-right:7px; cursor:pointer; accent-color:#ef4444; }
+.checkbox-item label { cursor:pointer; margin:0; font-weight:500; font-size:0.8em; }
+.printer-section { margin-bottom:14px; padding:12px; background:var(--card-dark); border-radius:16px; border:1px solid rgba(234,179,8,0.45); }
+body.theme-light .printer-section { background:var(--card-light); border-color:rgba(234,179,8,0.7); }
+.printer-section h2 { color:#fde68a; margin-bottom:8px; font-size:0.95em; text-transform:uppercase; letter-spacing:.14em; }
+body.theme-light .printer-section h2 { color:#92400e; }
+.printer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(75px, 1fr)); gap:6px; margin-top:6px; }
+.printer-item { text-align:center; padding:5px; background:rgba(15,23,42,0.8); border-radius:10px; border:1px solid rgba(148,163,184,0.4); }
+body.theme-light .printer-item { background:rgba(241,245,249,0.9); }
+.printer-item .name { font-size:0.72em; font-weight:600; color:#e5e7eb; margin-bottom:3px; }
+body.theme-light .printer-item .name { color:#111827; }
+.printer-item select { width:100%; padding:2px; border-radius:6px; font-size:0.7em; font-weight:600; cursor:pointer; border:1px solid rgba(148,163,184,0.5); }
+.capacity-box {
+display:inline-block; padding:8px 12px; background:rgba(22,163,74,0.15);
+border:1px solid rgba(74,222,128,0.5); border-radius:12px; margin-top:8px;
+}
+body.theme-light .capacity-box { background:rgba(187,247,208,0.5); border-color:rgba(34,197,94,0.7); }
+.capacity-box span { font-size:0.82em; font-weight:600; color:#4ade80; margin-right:12px; }
+body.theme-light .capacity-box span { color:#15803d; }
+.jambuster-section { display:none; margin-top:8px; }
+.jambuster-section.active { display:block; }
+.formation-row { display:flex; gap:6px; align-items:center; margin-bottom:6px; flex-wrap:wrap; }
+.formation-row select, .formation-row input {
+padding:5px 8px; border-radius:999px; border:1px solid rgba(56,189,248,0.5);
+background:rgba(15,23,42,0.96); color:#f9fafb; font-size:0.8em; outline:none;
+}
+body.theme-light .formation-row select, body.theme-light .formation-row input { background:rgba(248,250,252,0.96); color:#111827; }
+.btn {
+background:linear-gradient(135deg, #38bdf8 0%, #6366f1 100%); color:white;
+padding:8px 22px; border:none; border-radius:999px; font-size:0.88em; font-weight:600;
+cursor:pointer; transition:transform 0.18s, box-shadow 0.18s; display:inline-block; margin:5px;
+}
+.btn:hover { transform:translateY(-2px); filter:brightness(1.05); }
+.btn-secondary { background:linear-gradient(135deg, #f97373 0%, #fb7185 100%); }
+.btn-success { background:linear-gradient(135deg, #22c55e 0%, #4ade80 100%); }
+.btn-swap { background:linear-gradient(135deg, #22d3ee 0%, #6366f1 100%); }
+.btn-add { background:linear-gradient(135deg, #4ade80 0%, #22c55e 100%); }
+.btn-delete { background:linear-gradient(135deg, #ef4444 0%, #f97316 100%); }
+.btn-move { background:linear-gradient(135deg, #facc15 0%, #f97316 100%); }
+.btn-sm { padding:5px 12px; font-size:0.76em; margin:3px; }
+.planning-container { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:10px; }
+.planning-section { background:var(--card-dark); border-radius:16px; padding:10px; border:1px solid var(--border-dark); }
+body.theme-light .planning-section { background:var(--card-light); border-color:var(--border-light); }
+.planning-section h3 { margin-bottom:6px; padding:6px 8px; border-radius:999px; color:white; text-align:center; font-size:0.85em; letter-spacing:.1em; text-transform:uppercase; }
+.planning-section.direct h3 { background:linear-gradient(135deg, #6366f1, #38bdf8); }
+.planning-section.indirect h3 { background:linear-gradient(135deg, #facc15, #f97316); color:#111827; }
+.planning-table { width:100%; border-collapse:collapse; font-size:0.82em; }
+.planning-table th { background:rgba(31,41,55,0.9); color:#e5e7eb; padding:7px; text-align:left; font-weight:600; border:1px solid rgba(55,65,81,0.9); font-size:0.78em; }
+body.theme-light .planning-table th { background:rgba(226,232,240,0.96); color:#111827; border-color:rgba(148,163,184,0.8); }
+.planning-table td { padding:7px; border:1px solid rgba(55,65,81,0.9); cursor:pointer; }
+body.theme-light .planning-table td { border-color:rgba(148,163,184,0.8); }
+.planning-table tr:hover { background:rgba(15,23,42,0.9); }
+body.theme-light .planning-table tr:hover { background:rgba(241,245,249,0.96); }
+.process-vareo { background:#1e293b; } .process-cs { background:#022c22; } .process-finalize { background:#3b1f0a; }
+.process-lamination { background:#111827; } .process-fixed { background:#3f1d1d; }
+.process-ws { background:#1e293b; } .process-jambuster { background:#312e81; }
+.process-formation { background:#134e4a; }
+body.theme-light .process-vareo { background:#e0f2fe; } body.theme-light .process-cs { background:#dcfce7; }
+body.theme-light .process-finalize { background:#ffedd5; } body.theme-light .process-lamination { background:#e5e7eb; }
+body.theme-light .process-fixed { background:#fee2e2; } body.theme-light .process-ws { background:#e0f2fe; }
+body.theme-light .process-jambuster { background:#ede9fe; } body.theme-light .process-formation { background:#ccfbf1; }
+.person-cell { cursor:pointer; padding:2px 5px; margin:2px; background:#22c55e; color:white; border-radius:4px; display:inline-block; font-size:0.78em; transition:all 0.2s; }
+.person-cell:hover { background:#16a34a; transform:scale(1.05); }
+.person-cell.trainee { background:#06b6d4; }
+.person-selected { background:#f97316 !important; }
+.proposal-nav { display:flex; justify-content:center; align-items:center; gap:15px; margin:12px 0; padding:10px; background:var(--card-dark); border-radius:12px; border:1px solid rgba(129,140,248,0.6); }
+body.theme-light .proposal-nav { background:var(--card-light); border-color:rgba(129,140,248,0.8); }
+.proposal-nav span { font-weight:600; color:#c7d2fe; font-size:0.9em; }
+body.theme-light .proposal-nav span { color:#4f46e5; }
+.history-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:8px; }
+.history-card { background:var(--card-dark); padding:10px; border-radius:12px; border:1px solid rgba(129,140,248,0.7); cursor:pointer; transition:all 0.2s; }
+body.theme-light .history-card { background:var(--card-light); border-color:rgba(129,140,248,0.8); }
+.history-card:hover { transform:translateY(-2px); }
+.history-card h3 { color:#c7d2fe; margin-bottom:4px; font-size:0.9em; }
+body.theme-light .history-card h3 { color:#4f46e5; }
+.history-card p { color:#9ca3af; font-size:0.78em; }
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:3000; align-items:center; justify-content:center; }
+.modal.active { display:flex; }
+.modal-content { background:rgba(15,23,42,0.98); border-radius:18px; border:1px solid rgba(148,163,184,0.6); max-width:1400px; width:95%; max-height:90vh; padding:16px; overflow:auto; }
+body.theme-light .modal-content { background:rgba(248,250,252,0.98); border-color:rgba(148,163,184,0.8); }
+.modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.modal-header h2 { font-size:1em; text-transform:uppercase; letter-spacing:.14em; color:#c7d2fe; }
+body.theme-light .modal-header h2 { color:#4f46e5; }
+.modal-close { border:none; background:transparent; color:#e5e7eb; font-size:1.4em; cursor:pointer; }
+.add-modal, .move-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:3100; align-items:center; justify-content:center; }
+.add-modal.active, .move-modal.active { display:flex; }
+.add-content, .move-content { background:rgba(15,23,42,0.98); border-radius:16px; padding:16px; border:1px solid rgba(148,163,184,0.7); width:320px; }
+body.theme-light .add-content, body.theme-light .move-content { background:rgba(248,250,252,0.98); }
+.swap-menu { position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:6px; background:rgba(15,23,42,0.98); border-radius:14px; border:1px solid rgba(148,163,184,0.7); padding:6px; display:none; z-index:2500; min-width:200px; }
+.swap-menu.active { display:block; }
+.swap-menu button { width:100%; border:none; background:transparent; color:#e5e7eb; padding:6px 8px; border-radius:10px; text-align:left; font-size:0.78em; cursor:pointer; }
+.swap-menu button:hover { background:rgba(37,99,235,0.25); }
+.ia-section { background:rgba(168,85,247,0.1); border:1px solid rgba(168,85,247,0.4); border-radius:12px; padding:10px; margin:10px 0; }
+.ia-section p { font-size:0.82em; color:#c4b5fd; }
+body.theme-light .ia-section p { color:#7c3aed; }
+#results { display:none; }
+</style>
+</head>
+
+<body class="theme-dark">
+<div class="container">
+<div class="header">
+<div class="header-main">
+<div class="header-title-block">
+<h1>🌙 Staffing Night – Liquid Glass v9.5</h1>
+<p>21h00 - 5h00 | 3 périodes | Génération automatique</p>
+</div>
+<div class="header-actions">
+<button class="nav-btn" onclick="window.location.href='index.html'"><span>🏠</span><span>Accueil</span></button>
+<button class="nav-btn" onclick="window.location.href='skill_matrix_night.html'"><span>📊</span><span>Skill Matrix</span></button>
+<div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+<span class="theme-toggle-icon sun">☀️</span>
+<span class="theme-toggle-icon moon">🌙</span>
+<div class="theme-toggle-thumb"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="content">
+
+<div class="dashboard">
+<div class="dashboard-card"><h3>📦 Plan Présence</h3><div class="value" id="dashPlanPresence">0</div><div class="label">livres (auto)</div></div>
+<div class="dashboard-card"><h3>📊 Plan S&OP</h3><div class="value" id="dashPlanSOP">0</div><div class="label">livres (prévu)</div></div>
+<div class="dashboard-card"><h3>⚡ TPH</h3><div class="value"><input type="number" id="inputTPH" value="75" min="0" style="width:60px;text-align:center;background:transparent;border:none;color:inherit;font-size:1em;font-weight:700;" onfocus="clearZero(this)" oninput="updateCalculs();autoSave();"></div><div class="label">saisie manuelle</div></div>
+<div class="dashboard-card"><h3>👥 AAS Réel</h3><div class="value" id="dashAAS">0/0</div><div class="label">dispo/total</div></div>
+<div class="dashboard-card"><h3>📋 AAS S&OP</h3><div class="value"><input type="number" id="inputAASSOP" placeholder="0" min="0" style="width:60px;text-align:center;background:transparent;border:none;color:inherit;font-size:1em;font-weight:700;" onfocus="clearZero(this)" oninput="updateCalculs();autoSave();"></div><div class="label">saisie manuelle</div></div>
+<div class="dashboard-card"><h3>🔄 WIP Total</h3><div class="value" id="dashWIP">0</div><div class="label">livres</div></div>
+<div class="dashboard-card"><h3>📋 Backlog</h3><div class="value" id="dashBacklog">0</div><div class="label">Prisma</div></div>
+<div class="dashboard-card"><h3>⏱️ Temps Écoulé</h3><div class="value" id="dashTempsEcoule">0:00</div><div class="label">depuis 21h00</div></div>
+<div class="dashboard-card"><h3>✅ Volume Fait</h3><div class="value" id="dashVolumeFait">0</div><div class="label">livres</div></div>
+<div class="dashboard-card"><h3>📦 Reste</h3><div class="value" id="dashReste">0</div><div class="label">à imprimer</div></div>
+</div>
+
+<div class="section" style="background:radial-gradient(circle at top, rgba(22,163,74,0.15), var(--card-dark));border-color:rgba(74,222,128,0.4);">
+<h2>✅ Volume - Saisie</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:8px;">
+<div class="form-group"><label>Livres Finalisés (manuel) :</label><input type="number" id="livresFinalises" placeholder="0" min="0" onfocus="clearZero(this)" oninput="updateVolumeFait();autoSave();"></div>
+<div class="form-group"><label>Livres Printed (auto TM) :</label><input type="number" id="livresPrinted" value="0" readonly style="opacity:0.7;"></div>
+<div class="form-group"><label>Buffer Finalize (auto TM) :</label><input type="number" id="bufferFinalize" value="0" readonly style="opacity:0.7;"></div>
+<div class="form-group"><label>Reste à imprimer :</label><input type="number" id="resteImprimer" value="0" readonly style="opacity:0.7;"></div>
+</div>
+</div>
+
+<div class="section">
+<h2>📅 Jour Détecté</h2>
+<div class="value" id="jourDetecte" style="font-size:1.1em;color:#c7d2fe;text-align:center;">—</div>
+</div>
+
+<div class="section">
+<h2>📋 Gestion des Présences</h2>
+<p style="margin-bottom:8px;font-size:0.82em;">Cochez les personnes absentes ce soir :</p>
+<div class="checkbox-grid" id="absenceGrid"></div>
+</div>
+
+<div class="section">
+<h2>🧑‍💼 Support Lead</h2>
+<div style="display:flex;align-items:center;gap:10px;">
+<label style="font-size:0.82em;font-weight:600;">Mode :</label>
+<select id="supportLeadMode" onchange="toggleSupportLead()" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(56,189,248,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.82em;">
+<option value="non">Non</option>
+<option value="oui">Oui</option>
+</select>
+</div>
+<div id="supportLeadSection" style="display:none;margin-top:8px;">
+<select id="supportLead" style="padding:7px 12px;border-radius:999px;border:1px solid rgba(56,189,248,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.85em;">
+<option value="">Aucun</option>
+<option value="Shada">Shada</option>
+<option value="Laurent">Laurent</option>
+<option value="Kezza">Kezza</option>
+</select>
+</div>
+</div>
+
+<div class="section">
+<h2>🚛 Jambuster</h2>
+<div style="display:flex;align-items:center;gap:10px;">
+<label style="font-size:0.82em;font-weight:600;">Mode :</label>
+<select id="jambMode" onchange="toggleJambuster()" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(168,85,247,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.82em;">
+<option value="non">Non</option>
+<option value="oui">Oui</option>
+</select>
+</div>
+<div class="jambuster-section" id="jambusterSection">
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-top:8px;">
+<div class="form-group"><label>JB1 :</label><select id="jambWho1"><option value="">--</option></select></div>
+<div class="form-group"><label>JB2 :</label><select id="jambWho2"><option value="">--</option></select></div>
+<div class="form-group"><label>JB3 :</label><select id="jambWho3"><option value="">--</option></select></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📚 Formation</h2>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+<label style="font-size:0.82em;font-weight:600;">Mode :</label>
+<select id="formationMode" onchange="toggleFormation()" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(56,189,248,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.82em;">
+<option value="non">Non</option>
+<option value="oui">Oui</option>
+</select>
+</div>
+<div id="formationSection" style="display:none;">
+<div id="formationList"></div>
+<button class="btn btn-add btn-sm" onclick="addFormation()">+ Ajouter</button>
+</div>
+</div>
+
+<div class="section">
+<h2>⏰ Heures Supplémentaires</h2>
+<div id="renfortList"></div>
+<button class="btn btn-add btn-sm" onclick="addRenfort()">+ Ajouter</button>
+<button class="btn btn-delete btn-sm" onclick="clearRenforts()">Vider</button>
+</div>
+
+<div class="section">
+<h2>📦 WIP par Zone</h2>
+<div class="wip-grid">
+<div class="wip-card"><h3>📄 CS</h3><input type="number" id="wipCS" placeholder="0" min="0" onfocus="clearZero(this)" oninput="updateDashWIP();updateDashBacklog();autoSave();"></div>
+<div class="wip-card"><h3>🔧 Vareo</h3><input type="number" id="wipVareo" placeholder="0" min="0" onfocus="clearZero(this)" oninput="updateDashWIP();updateDashBacklog();autoSave();"></div>
+<div class="wip-card"><h3>✅ Finalize</h3><input type="number" id="wipFinalize" placeholder="0" min="0" onfocus="clearZero(this)" oninput="updateDashWIP();updateDashBacklog();autoSave();"></div>
+<div class="wip-card"><h3>📋 Backlog</h3><input type="number" id="wipBacklog" placeholder="0" min="0" onfocus="clearZero(this)" oninput="updateDashBacklog();autoSave();"></div>
+</div>
+<div style="margin-top:8px;">
+<label style="font-size:0.8em;font-weight:600;">📋 Coller depuis MOD :</label>
+<input type="text" id="syncModInput" placeholder="Collez ici (ex: CS=247 | Var=666 | Fin=968 | BL=17489)" style="width:100%;padding:7px 10px;border-radius:999px;border:1px solid rgba(56,189,248,0.7);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.85em;outline:none;margin-top:4px;">
+<button class="btn btn-sm" onclick="parseSyncMod()" style="margin-top:5px;">📥 Appliquer</button>
+</div>
+</div>
+
+<div class="printer-section">
+<h2>🖨️ Imprimantes</h2>
+<h4 style="color:#93c5fd;font-size:0.8em;margin-bottom:5px;">INKJET (IJ)</h4>
+<div class="printer-grid" id="printerGridIJ"></div>
+<h4 style="color:#93c5fd;font-size:0.8em;margin:8px 0 5px;">IX</h4>
+<div class="printer-grid" id="printerGridIX"></div>
+<h4 style="color:#93c5fd;font-size:0.8em;margin:8px 0 5px;">B&W (1-11)</h4>
+<div class="printer-grid" id="printerGridBW"></div>
+<h4 style="color:#93c5fd;font-size:0.8em;margin:8px 0 5px;">COVER (1-5)</h4>
+<div class="printer-grid" id="printerGridCover"></div>
+<div class="capacity-box" id="capacityBox">
+<strong style="font-size:0.82em;color:#fde68a;margin-right:8px;">Capacité d'impression minimum :</strong>
+<span id="capBW">BW: 0/h | 0 shift</span>
+<span id="capIJ">IJ: 0/h | 0 shift</span>
+<span id="capIX">IX: 0/h | 0 shift</span>
+<span id="capTotal" style="font-weight:700;">Total: 0/h | 0 shift</span>
+</div>
+</div>
+
+<div id="iaSection" class="ia-section" style="display:none;">
+<p id="iaMessage"></p>
+<div style="margin-top:6px;text-align:center;">
+<button class="btn btn-sm" onclick="confirmIA()">✅ Confirmer</button>
+<button class="btn btn-secondary btn-sm" onclick="dismissIA()">❌ Ignorer</button>
+</div>
+</div>
+
+<div style="text-align:center;margin:14px 0;">
+<button class="btn" onclick="generatePlanning()">🚀 Générer le Planning</button>
+<button class="btn btn-secondary" onclick="resetAll()">🗑️ Tout Effacer</button>
+<button class="btn btn-success" onclick="savePlanning()">💾 Sauvegarder</button>
+</div>
+
+<div id="results">
+<div class="proposal-nav">
+<button class="btn btn-secondary btn-sm" onclick="previousProposal()">◀️ Préc</button>
+<span id="proposalCounter">Proposition 1 / 3</span>
+<button class="btn btn-sm" onclick="nextProposal()">Suiv ▶️</button>
+</div>
+<div class="section">
+<h2>✅ Planning Généré</h2>
+<div style="text-align:center;margin-bottom:10px;position:relative;">
+<button class="btn btn-add btn-sm" onclick="activateAddMode()">➕ Ajouter</button>
+<button class="btn btn-delete btn-sm" onclick="activateDeleteMode()">🗑️ Effacer</button>
+<button class="btn btn-move btn-sm" onclick="activateMoveMode()">➡️ Déplacer</button>
+<button class="btn btn-swap btn-sm" id="swapButton" onclick="toggleSwapMenu()">🔄 Swap</button>
+<div class="swap-menu" id="swapMenu">
+<button onclick="setSwapMode('local')">🔹 Swap local</button>
+<button onclick="setSwapMode('process')">🟡 Swap process</button>
+<button onclick="setSwapMode('global')">🔴 Swap global</button>
+</div>
+</div>
+<div class="planning-container">
+<div class="planning-section direct"><h3>🔵 DIRECT - Production</h3><table class="planning-table" id="planningTableDirect"></table></div>
+<div class="planning-section indirect"><h3>🟡 INDIRECT - Support</h3><table class="planning-table" id="planningTableIndirect"></table></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📚 Historique de la Semaine</h2>
+<div class="history-grid" id="historyGrid"><p style="font-size:0.82em;">Aucun planning sauvegardé.</p></div>
+</div>
+
+</div>
+</div>
+
+<div class="modal" id="planningModal"><div class="modal-content"><div class="modal-header"><h2 id="modalTitle">Planning</h2><button class="modal-close" onclick="closePlanningModal()">✕</button></div><div id="modalPlanningContent"></div></div></div>
+<div class="add-modal" id="addModal"><div class="add-content"><h3>➕ Ajouter</h3><p id="addInfo" style="margin-bottom:10px;font-size:0.82em;"></p><select id="personToAdd"><option value="">--</option></select><div style="margin-top:12px;text-align:center;"><button class="btn btn-sm" onclick="executeAdd()">✅</button><button class="btn btn-secondary btn-sm" onclick="closeAddModal()">❌</button></div></div></div>
+<div class="move-modal" id="moveModal"><div class="move-content"><h3>➡️ Déplacer</h3><p id="moveInfo" style="margin-bottom:10px;font-size:0.82em;"></p><select id="targetProcess"><option value="">--</option><option value="CS">CS</option><option value="Vareo">Vareo</option><option value="Finalize">Finalize</option><option value="Lamination">Lamination</option><option value="WS">WS</option><option value="IX">IX</option><option value="IJ">IJ</option><option value="PS">PS</option><option value="QC">QC</option></select><select id="targetPeriode"><option value="0">P1</option><option value="1">P2</option><option value="2">P3</option></select><div style="margin-top:12px;text-align:center;"><button class="btn btn-sm" onclick="executeMove()">✅</button><button class="btn btn-secondary btn-sm" onclick="closeMoveModal()">❌</button></div></div></div>
+
+
+<script>
+var equipe = [];
+var formations = { IX:[], IJ:[], PS:[], QC:[], Vareo:[], CS:[], Finalize:[], Lamination:[], WS:[] };
+var capacites = { CS:280, Vareo:350, Finalize:345 };
+var DUREE_SHIFT = 7.33;
+var DUREE_TRAVAIL_EFFECTIF = 7.0;
+var periodes = [
+{ nom:"Période 1", debut:"21h00", fin:"23h30" },
+{ nom:"Période 2", debut:"00h10", fin:"02h40" },
+{ nom:"Période 3", debut:"03h10", fin:"05h00" }
+];
+var currentPlanning = null;
+var allProposals = [];
+var currentProposalIndex = 0;
+var weekHistory = JSON.parse(localStorage.getItem('weekHistory_night')) || {};
+var swapMode = false, swapModeType = null, swapSelection = { first:null, second:null };
+var addMode = false, deleteMode = false, moveMode = false;
+var moveSelection = null, addSelection = null;
+var renfortsList = [];
+var formationsList = [];
+var instructeurs = ['Mariama','Laurent','Hadari','Ba'];
+
+function normaliserNom(nom) {
+var n = nom.trim();
+if (!n) return '';
+return n.charAt(0).toUpperCase() + n.slice(1).toLowerCase();
+}
+
+function clearZero(el) { if (el.value === '0' || el.value === 0) el.value = ''; }
+
+function loadTeamFromURL() {
+var params = new URLSearchParams(window.location.search);
+var allNames = {};
+var skills = ['CS','Vareo','Finalize','Lamination','WS','IX','IJ','PS','QC'];
+for (var s = 0; s < skills.length; s++) {
+var skill = skills[s];
+var value = params.get(skill);
+if (value) {
+var names = value.split(',');
+var cleaned = [];
+for (var i = 0; i < names.length; i++) {
+var n = normaliserNom(names[i]);
+if (n && cleaned.indexOf(n) === -1) cleaned.push(n);
+}
+formations[skill] = cleaned;
+for (var j = 0; j < cleaned.length; j++) { allNames[cleaned[j]] = true; }
+}
+}
+equipe = Object.keys(allNames).sort();
+}
+
+function detectJour() {
+var jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+var mois = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+var d = new Date();
+var h = d.getHours();
+var jour1, date1, jour2, date2;
+if (h >= 21) {
+jour1 = jours[d.getDay()];
+date1 = d.getDate() + ' ' + mois[d.getMonth()];
+var demain = new Date(d.getTime() + 86400000);
+jour2 = jours[demain.getDay()];
+date2 = demain.getDate() + ' ' + mois[demain.getMonth()];
+} else {
+var hier = new Date(d.getTime() - 86400000);
+jour1 = jours[hier.getDay()];
+date1 = hier.getDate() + ' ' + mois[hier.getMonth()];
+jour2 = jours[d.getDay()];
+date2 = d.getDate() + ' ' + mois[d.getMonth()];
+}
+return 'Nuit du ' + jour1 + ' ' + date1 + ' au ' + jour2 + ' ' + date2;
+}
+
+function getJourSimple() {
+var d = new Date();
+var h = d.getHours();
+var jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+if (h >= 21) return jours[d.getDay()];
+var hier = new Date(d.getTime() - 86400000);
+return jours[hier.getDay()];
+}
+
+function toggleTheme() {
+if (document.body.classList.contains('theme-dark')) {
+document.body.classList.remove('theme-dark'); document.body.classList.add('theme-light'); localStorage.setItem('themeMode','light');
+} else {
+document.body.classList.remove('theme-light'); document.body.classList.add('theme-dark'); localStorage.setItem('themeMode','dark');
+}
+}
+
+function initTheme() {
+var saved = localStorage.getItem('themeMode');
+if (saved === 'light') { document.body.classList.remove('theme-dark'); document.body.classList.add('theme-light'); }
+}
+
+function initAbsenceGrid() {
+var grid = document.getElementById('absenceGrid');
+grid.innerHTML = '';
+for (var i = 0; i < equipe.length; i++) {
+var personne = equipe[i];
+var div = document.createElement('div');
+div.className = 'checkbox-item';
+div.innerHTML = '<input type="checkbox" id="absent_' + personne + '" value="' + personne + '" onchange="updateDashboardAAS();updateCalculs();autoSave();"><label for="absent_' + personne + '">' + personne + '</label>';
+grid.appendChild(div);
+}
+}
+
+function initPrinters() {
+var gridIJ = document.getElementById('printerGridIJ');
+var gridIX = document.getElementById('printerGridIX');
+var gridBW = document.getElementById('printerGridBW');
+var gridCover = document.getElementById('printerGridCover');
+gridIJ.innerHTML = ''; gridIX.innerHTML = ''; gridBW.innerHTML = ''; gridCover.innerHTML = '';
+function makePrinter(name, container) {
+var id = name.replace(/[^a-zA-Z0-9]/g,'');
+var div = document.createElement('div');
+div.className = 'printer-item';
+div.innerHTML = '<div class="name">' + name + '</div>' +
+'<select id="p_' + id + '" onchange="updatePrinterColor(this);updateCapacities();" style="width:100%;padding:2px;border-radius:6px;font-size:0.7em;font-weight:600;cursor:pointer;border:1px solid rgba(148,163,184,0.5);background:#064e3b;color:#4ade80;">' +
+'<option value="ok" style="background:#064e3b;color:#4ade80;">✅ OK</option>' +
+'<option value="ko" style="background:#7f1d1d;color:#fca5a5;">❌ KO</option>' +
+'<option value="maint" style="background:#78350f;color:#fbbf24;">🟠 Maint.</option>' +
+'<option value="decom" style="background:#1f2937;color:#9ca3af;">⚫ Décom.</option>' +
+'</select>';
+container.appendChild(div);
+}
+makePrinter('IJ-1', gridIJ); makePrinter('IJ-2', gridIJ);
+makePrinter('IX-1', gridIX); makePrinter('IX-2', gridIX);
+for (var i = 1; i <= 11; i++) { makePrinter('BW-' + i, gridBW); }
+for (var j = 1; j <= 5; j++) { makePrinter('COV-' + j, gridCover); }
+updateCapacities();
+}
+
+function updatePrinterColor(sel) {
+var v = sel.value;
+if (v === 'ok') { sel.style.background = '#064e3b'; sel.style.color = '#4ade80'; }
+else if (v === 'ko') { sel.style.background = '#7f1d1d'; sel.style.color = '#fca5a5'; }
+else if (v === 'maint') { sel.style.background = '#78350f'; sel.style.color = '#fbbf24'; }
+else { sel.style.background = '#1f2937'; sel.style.color = '#9ca3af'; }
+}
+
+function getPrintersActive() {
+var ij = 0, ix = 0, bw = 0, cover = 0;
+var elIJ1 = document.getElementById('p_IJ1'); if (elIJ1 && elIJ1.value === 'ok') ij++;
+var elIJ2 = document.getElementById('p_IJ2'); if (elIJ2 && elIJ2.value === 'ok') ij++;
+var elIX1 = document.getElementById('p_IX1'); if (elIX1 && elIX1.value === 'ok') ix++;
+var elIX2 = document.getElementById('p_IX2'); if (elIX2 && elIX2.value === 'ok') ix++;
+for (var i = 1; i <= 11; i++) { var el = document.getElementById('p_BW' + i); if (el && el.value === 'ok') bw++; }
+for (var j = 1; j <= 5; j++) { var el2 = document.getElementById('p_COV' + j); if (el2 && el2.value === 'ok') cover++; }
+return { ij:ij, ix:ix, bw:bw, cover:cover };
+}
+
+function updateCapacities() {
+var p = getPrintersActive();
+var capBWh = p.bw * 100;
+var capIJh = p.ij * 400;
+var capIXh = p.ix * 150;
+var capBWshift = Math.round(capBWh * DUREE_TRAVAIL_EFFECTIF);
+var capIJshift = Math.round(capIJh * DUREE_TRAVAIL_EFFECTIF);
+var capIXshift = Math.round(capIXh * DUREE_TRAVAIL_EFFECTIF);
+var totalH = capBWh + capIJh + capIXh;
+var totalShift = capBWshift + capIJshift + capIXshift;
+document.getElementById('capBW').textContent = 'BW: ' + capBWh + '/h | ' + capBWshift + ' shift';
+document.getElementById('capIJ').textContent = 'IJ: ' + capIJh + '/h | ' + capIJshift + ' shift';
+document.getElementById('capIX').textContent = 'IX: ' + capIXh + '/h | ' + capIXshift + ' shift';
+document.getElementById('capTotal').textContent = 'Total: ' + totalH + '/h | ' + totalShift + ' shift';
+}
+
+function toggleSupportLead() {
+var mode = document.getElementById('supportLeadMode').value;
+document.getElementById('supportLeadSection').style.display = mode === 'oui' ? 'block' : 'none';
+}
+
+function toggleJambuster() {
+var mode = document.getElementById('jambMode').value;
+var section = document.getElementById('jambusterSection');
+if (mode === 'oui') { section.classList.add('active'); populateJambusterSelects(); }
+else { section.classList.remove('active'); }
+}
+
+function toggleFormation() {
+var mode = document.getElementById('formationMode').value;
+document.getElementById('formationSection').style.display = mode === 'oui' ? 'block' : 'none';
+}
+
+function populateJambusterSelects() {
+var absents = getAbsents();
+var dispo = equipe.filter(function(p) { return absents.indexOf(p) === -1; });
+var ids = ['jambWho1','jambWho2','jambWho3'];
+for (var k = 0; k < ids.length; k++) {
+var sel = document.getElementById(ids[k]);
+var current = sel ? sel.value : '';
+sel.innerHTML = '<option value="">-- Personne --</option>';
+for (var i = 0; i < dispo.length; i++) { sel.innerHTML += '<option value="' + dispo[i] + '"' + (dispo[i] === current ? ' selected' : '') + '>' + dispo[i] + '</option>'; }
+}
+}
+
+function getAbsents() {
+var absents = [];
+for (var i = 0; i < equipe.length; i++) {
+var cb = document.getElementById('absent_' + equipe[i]);
+if (cb && cb.checked) absents.push(equipe[i]);
+}
+return absents;
+}
+
+function addRenfort() {
+var div = document.getElementById('renfortList');
+var idx = renfortsList.length;
+renfortsList.push({ nom:'', process:'' });
+var row = document.createElement('div');
+row.className = 'formation-row';
+row.id = 'renfort_' + idx;
+row.innerHTML = '<input type="text" placeholder="Nom" style="width:120px;padding:5px 8px;border-radius:999px;border:1px solid rgba(148,163,184,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.82em;" onchange="renfortsList[' + idx + '].nom=this.value">' +
+'<select onchange="renfortsList[' + idx + '].process=this.value" style="padding:5px 8px;border-radius:999px;border:1px solid rgba(148,163,184,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.82em;"><option value="">Process</option><option value="CS">CS</option><option value="Vareo">Vareo</option><option value="Finalize">Finalize</option><option value="Lamination">Lamination</option><option value="WS">WS</option><option value="IX">IX</option><option value="IJ">IJ</option><option value="PS">PS</option><option value="QC">QC</option></select>' +
+'<button class="btn btn-delete btn-sm" onclick="removeRenfort(' + idx + ')">✕</button>';
+div.appendChild(row);
+}
+
+function removeRenfort(idx) { var el = document.getElementById('renfort_' + idx); if (el) el.remove(); renfortsList[idx] = null; }
+function clearRenforts() { document.getElementById('renfortList').innerHTML = ''; renfortsList = []; }
+
+function addFormation() {
+var div = document.getElementById('formationList');
+var idx = formationsList.length;
+formationsList.push({ trainee:'', instructeur:'', process:'' });
+var row = document.createElement('div');
+row.className = 'formation-row';
+row.id = 'formation_' + idx;
+var instrOpts = '<option value="">Aucun</option>';
+for (var j = 0; j < instructeurs.length; j++) { instrOpts += '<option value="' + instructeurs[j] + '">' + instructeurs[j] + '</option>'; }
+row.innerHTML = '<input type="text" placeholder="Nom" style="width:120px;padding:5px 8px;border-radius:999px;border:1px solid rgba(56,189,248,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.82em;" onchange="formationsList[' + idx + '].trainee=this.value">' +
+'<select onchange="formationsList[' + idx + '].process=this.value" style="padding:5px 8px;border-radius:999px;border:1px solid rgba(56,189,248,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.82em;"><option value="">Process</option><option value="CS">CS</option><option value="Vareo">Vareo</option><option value="Finalize">Finalize</option><option value="WS">WS</option><option value="Lamination">Lamination</option></select>' +
+'<select onchange="formationsList[' + idx + '].instructeur=this.value" style="padding:5px 8px;border-radius:999px;border:1px solid rgba(56,189,248,0.5);background:rgba(15,23,42,0.96);color:#f9fafb;font-size:0.82em;">' + instrOpts + '</select>' +
+'<button class="btn btn-delete btn-sm" onclick="removeFormation(' + idx + ')">✕</button>';
+div.appendChild(row);
+}
+
+function removeFormation(idx) { var el = document.getElementById('formation_' + idx); if (el) el.remove(); formationsList[idx] = null; }
+
+function updateDashboardAAS() {
+var absents = getAbsents();
+var total = equipe.length;
+var disponibles = total - absents.length;
+document.getElementById('dashAAS').textContent = disponibles + '/' + total;
+}
+
+function updateCalculs() {
+var absents = getAbsents();
+var total = equipe.length;
+var dispo = total - absents.length;
+var tph = parseInt(document.getElementById('inputTPH').value) || 75;
+var aasSOP = parseInt(document.getElementById('inputAASSOP').value) || 0;
+var planPresence = Math.round(dispo * tph * DUREE_SHIFT * 0.92);
+document.getElementById('dashPlanPresence').textContent = planPresence;
+var planSOP = Math.round(aasSOP * tph * DUREE_SHIFT * 0.92);
+document.getElementById('dashPlanSOP').textContent = planSOP;
+updateDashboardAAS();
+updateReste();
+}
+
+function updateDashWIP() {
+var cs = parseInt(document.getElementById('wipCS').value) || 0;
+var vareo = parseInt(document.getElementById('wipVareo').value) || 0;
+var fin = parseInt(document.getElementById('wipFinalize').value) || 0;
+document.getElementById('dashWIP').textContent = cs + vareo + fin;
+}
+
+function updateDashBacklog() {
+var bl = parseInt(document.getElementById('wipBacklog').value) || 0;
+document.getElementById('dashBacklog').textContent = bl;
+}
+
+function updateVolumeFait() {
+var finalises = parseInt(document.getElementById('livresFinalises').value) || 0;
+var printed = parseInt(document.getElementById('livresPrinted').value) || 0;
+var buffer = parseInt(document.getElementById('bufferFinalize').value) || 0;
+var total = finalises + printed + buffer;
+document.getElementById('dashVolumeFait').textContent = total;
+updateReste();
+}
+
+function updateReste() {
+var plan = parseInt(document.getElementById('dashPlanPresence').textContent) || 0;
+var fait = parseInt(document.getElementById('dashVolumeFait').textContent) || 0;
+var reste = Math.max(0, plan - fait);
+document.getElementById('resteImprimer').value = reste;
+document.getElementById('dashReste').textContent = reste;
+}
+
+function updateTempsEcoule() {
+var now = new Date();
+var h = now.getHours();
+var m = now.getMinutes();
+var minutes;
+if (h >= 21) { minutes = (h - 21) * 60 + m; }
+else { minutes = (24 - 21) * 60 + h * 60 + m; }
+var heures = Math.floor(minutes / 60);
+var mins = minutes % 60;
+document.getElementById('dashTempsEcoule').textContent = heures + ':' + (mins < 10 ? '0' : '') + mins;
+}
+
+function parseSyncMod() {
+var input = document.getElementById('syncModInput').value.trim();
+if (!input) { alert('⚠️ Collez les valeurs depuis MOD'); return; }
+var cs = 0, vareo = 0, fin = 0, bl = 0;
+var parts = input.split('|');
+for (var i = 0; i < parts.length; i++) {
+var p = parts[i].trim();
+var pLow = p.toLowerCase();
+var val = parseInt(p.replace(/[^0-9]/g, '')) || 0;
+if (pLow.indexOf('cs') !== -1) cs = val;
+else if (pLow.indexOf('var') !== -1 || pLow.indexOf('vare') !== -1) vareo = val;
+else if (pLow.indexOf('fin') !== -1) fin = val;
+else if (pLow.indexOf('bl') !== -1 || pLow.indexOf('back') !== -1) bl = val;
+}
+if (cs === 0 && vareo === 0 && fin === 0 && bl === 0) {
+var nums = input.match(/\d+/g);
+if (nums && nums.length >= 3) {
+cs = parseInt(nums[0]) || 0;
+vareo = parseInt(nums[1]) || 0;
+fin = parseInt(nums[2]) || 0;
+if (nums.length >= 4) bl = parseInt(nums[3]) || 0;
+}
+}
+document.getElementById('wipCS').value = cs;
+document.getElementById('wipVareo').value = vareo;
+document.getElementById('wipFinalize').value = fin;
+document.getElementById('wipBacklog').value = bl;
+updateDashWIP(); updateDashBacklog();
+alert('✅ WIP appliqué !\nCS: ' + cs + ' | Vareo: ' + vareo + ' | Fin: ' + fin + ' | BL: ' + bl);
+}
+
+function autoSave() {
+var state = {
+absents: getAbsents(),
+wipCS: document.getElementById('wipCS').value,
+wipVareo: document.getElementById('wipVareo').value,
+wipFinalize: document.getElementById('wipFinalize').value,
+wipBacklog: document.getElementById('wipBacklog').value,
+supportLeadMode: document.getElementById('supportLeadMode').value,
+supportLead: document.getElementById('supportLead').value,
+inputTPH: document.getElementById('inputTPH').value,
+inputAASSOP: document.getElementById('inputAASSOP').value,
+livresFinalises: document.getElementById('livresFinalises').value,
+jambMode: document.getElementById('jambMode').value,
+jambWho1: document.getElementById('jambWho1').value,
+jambWho2: document.getElementById('jambWho2').value,
+jambWho3: document.getElementById('jambWho3').value,
+formationMode: document.getElementById('formationMode').value
+};
+localStorage.setItem('autoSave_night', JSON.stringify(state));
+}
+
+function autoRestore() {
+var saved = localStorage.getItem('autoSave_night');
+if (!saved) return;
+try {
+var state = JSON.parse(saved);
+if (state.wipCS) document.getElementById('wipCS').value = state.wipCS;
+if (state.wipVareo) document.getElementById('wipVareo').value = state.wipVareo;
+if (state.wipFinalize) document.getElementById('wipFinalize').value = state.wipFinalize;
+if (state.wipBacklog) document.getElementById('wipBacklog').value = state.wipBacklog;
+if (state.supportLeadMode) { document.getElementById('supportLeadMode').value = state.supportLeadMode; toggleSupportLead(); }
+if (state.supportLead) document.getElementById('supportLead').value = state.supportLead;
+if (state.inputTPH) document.getElementById('inputTPH').value = state.inputTPH;
+if (state.inputAASSOP) document.getElementById('inputAASSOP').value = state.inputAASSOP;
+if (state.livresFinalises) document.getElementById('livresFinalises').value = state.livresFinalises;
+if (state.jambMode) { document.getElementById('jambMode').value = state.jambMode; toggleJambuster(); }
+if (state.jambWho1) document.getElementById('jambWho1').value = state.jambWho1;
+if (state.jambWho2) document.getElementById('jambWho2').value = state.jambWho2;
+if (state.jambWho3) document.getElementById('jambWho3').value = state.jambWho3;
+if (state.formationMode) { document.getElementById('formationMode').value = state.formationMode; toggleFormation(); }
+if (state.absents && state.absents.length > 0) {
+for (var i = 0; i < state.absents.length; i++) {
+var cb = document.getElementById('absent_' + state.absents[i]);
+if (cb) cb.checked = true;
+}
+}
+} catch(e) {}
+updateDashboardAAS(); updateDashWIP(); updateDashBacklog(); updateVolumeFait(); updateCalculs();
+}
+
+function shuffleArray(array) {
+var shuffled = array.slice();
+for (var i = shuffled.length - 1; i > 0; i--) {
+var j = Math.floor(Math.random() * (i + 1));
+var temp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = temp;
+}
+return shuffled;
+}
+
+
+
+function calculerStaffingTotal(wipCS, wipVareo, wipFinalize, backlog, plan) {
+var printers = getPrintersActive();
+var besoinCS = Math.max(1, Math.ceil(wipCS / (capacites.CS * DUREE_TRAVAIL_EFFECTIF)));
+var besoinVareo = Math.max(1, Math.ceil(wipVareo / (capacites.Vareo * DUREE_TRAVAIL_EFFECTIF)));
+var besoinFinalize = Math.max(1, Math.ceil(wipFinalize / (capacites.Finalize * DUREE_TRAVAIL_EFFECTIF)));
+var besoinLam = 1;
+var besoinIX = printers.ix;
+var besoinIJ = printers.ij;
+var besoinPS = 1;
+var besoinQC = 1;
+var besoinWS = 1;
+return { CS:besoinCS, Vareo:besoinVareo, Finalize:besoinFinalize, Lamination:besoinLam, IX:besoinIX, IJ:besoinIJ, PS:besoinPS, QC:besoinQC, WS:besoinWS };
+}
+
+function getJambusterAssignments(periodeIdx) {
+var mode = document.getElementById('jambMode').value;
+if (mode !== 'oui') return [];
+var jb1 = document.getElementById('jambWho1').value;
+var jb2 = document.getElementById('jambWho2').value;
+var jb3 = document.getElementById('jambWho3').value;
+if (periodeIdx === 0 && jb1) return [jb1];
+if (periodeIdx === 1 && jb2) return [jb2];
+if (periodeIdx === 2 && jb3) return [jb3];
+return [];
+}
+
+function iaCheck() {
+var absents = getAbsents();
+var dispo = equipe.length - absents.length;
+var wipCS = parseInt(document.getElementById('wipCS').value) || 0;
+var wipVareo = parseInt(document.getElementById('wipVareo').value) || 0;
+var wipFinalize = parseInt(document.getElementById('wipFinalize').value) || 0;
+var messages = [];
+if (wipCS === 0 && wipVareo === 0 && wipFinalize === 0) messages.push('⚠️ WIP à 0 partout — avez-vous synchronisé depuis MOD ?');
+if (dispo < 8) messages.push('⚠️ Seulement ' + dispo + ' personnes disponibles — effectif très réduit.');
+var printers = getPrintersActive();
+if (printers.ij === 0 && printers.ix === 0) messages.push('⚠️ Aucune imprimante IJ/IX active.');
+if (messages.length > 0) {
+document.getElementById('iaMessage').innerHTML = '<strong>🤖 IA Staffing :</strong><br>' + messages.join('<br>');
+document.getElementById('iaSection').style.display = 'block';
+return false;
+}
+return true;
+}
+
+function confirmIA() { document.getElementById('iaSection').style.display = 'none'; doGeneratePlanning(); }
+function dismissIA() { document.getElementById('iaSection').style.display = 'none'; }
+
+function generatePlanning() {
+var iaOk = iaCheck();
+if (!iaOk) return;
+doGeneratePlanning();
+}
+
+function doGeneratePlanning() {
+var absents = getAbsents();
+var wipCS = parseInt(document.getElementById('wipCS').value) || 0;
+var wipVareo = parseInt(document.getElementById('wipVareo').value) || 0;
+var wipFinalize = parseInt(document.getElementById('wipFinalize').value) || 0;
+var backlogPrisma = parseInt(document.getElementById('wipBacklog').value) || 0;
+var tph = parseInt(document.getElementById('inputTPH').value) || 75;
+var dispo = equipe.length - absents.length;
+var planQuotidien = Math.round(dispo * tph * DUREE_SHIFT * 0.92);
+var jour = detectJour();
+var staffingTotal = calculerStaffingTotal(wipCS, wipVareo, wipFinalize, backlogPrisma, planQuotidien);
+allProposals = [];
+for (var proposalNum = 0; proposalNum < 3; proposalNum++) {
+var doShuffle = proposalNum > 0;
+var planningComplet = [];
+var usedGlobalIX = null, usedGlobalIJ = null, usedGlobalPS = null, usedGlobalQC = null, usedGlobalWS = null;
+
+periodes.forEach(function(periode, periodeIdx) {
+var used = new Set();
+var assignments = {};
+
+var supportLeadMode = document.getElementById('supportLeadMode').value;
+var supportLead = '';
+if (supportLeadMode === 'oui') { supportLead = document.getElementById('supportLead').value; }
+if (supportLead) used.add(supportLead);
+
+var formationsActives = formationsList.filter(function(f) { return f && f.trainee && f.process; });
+formationsActives.forEach(function(f) { if (f.instructeur) used.add(f.instructeur); used.add(f.trainee); });
+
+var jambusters = getJambusterAssignments(periodeIdx);
+jambusters.forEach(function(p) { used.add(p); });
+
+if (periodeIdx === 0) {
+var candIX = formations.IX.filter(function(p) { return absents.indexOf(p) === -1 && !used.has(p); });
+if (doShuffle) candIX = shuffleArray(candIX);
+usedGlobalIX = candIX.slice(0, staffingTotal.IX);
+usedGlobalIX.forEach(function(p) { used.add(p); });
+
+var candIJ = formations.IJ.filter(function(p) { return absents.indexOf(p) === -1 && !used.has(p); });
+if (doShuffle) candIJ = shuffleArray(candIJ);
+usedGlobalIJ = candIJ.slice(0, staffingTotal.IJ);
+usedGlobalIJ.forEach(function(p) { used.add(p); });
+
+var candPS = formations.PS.filter(function(p) { return absents.indexOf(p) === -1 && !used.has(p); });
+if (doShuffle) candPS = shuffleArray(candPS);
+usedGlobalPS = candPS.slice(0, 1);
+usedGlobalPS.forEach(function(p) { used.add(p); });
+
+var candQC = formations.QC.filter(function(p) { return absents.indexOf(p) === -1 && !used.has(p); });
+if (doShuffle) candQC = shuffleArray(candQC);
+usedGlobalQC = candQC.slice(0, 1);
+usedGlobalQC.forEach(function(p) { used.add(p); });
+
+var candWS = formations.WS ? formations.WS.filter(function(p) { return absents.indexOf(p) === -1 && !used.has(p); }) : equipe.filter(function(p) { return absents.indexOf(p) === -1 && !used.has(p); });
+if (doShuffle) candWS = shuffleArray(candWS);
+usedGlobalWS = candWS.slice(0, 1);
+usedGlobalWS.forEach(function(p) { used.add(p); });
+} else {
+usedGlobalIX.forEach(function(p) { used.add(p); });
+usedGlobalIJ.forEach(function(p) { used.add(p); });
+usedGlobalPS.forEach(function(p) { used.add(p); });
+usedGlobalQC.forEach(function(p) { used.add(p); });
+usedGlobalWS.forEach(function(p) { used.add(p); });
+}
+
+assignments.IX = usedGlobalIX.slice();
+assignments.IJ = usedGlobalIJ.slice();
+assignments.PS = usedGlobalPS.slice();
+assignments.QC = usedGlobalQC.slice();
+assignments.WS = usedGlobalWS.slice();
+
+var dispoRotation = equipe.filter(function(p) { return absents.indexOf(p) === -1 && !used.has(p); });
+if (doShuffle) dispoRotation = shuffleArray(dispoRotation);
+
+var processesRotation = ['CS','Vareo','Finalize','Lamination'];
+processesRotation.forEach(function(process) {
+var besoin = staffingTotal[process] || 1;
+var candidates = dispoRotation.slice();
+var assigned = candidates.slice(0, Math.max(1, besoin));
+assignments[process] = assigned;
+assigned.forEach(function(p) { used.add(p); dispoRotation = dispoRotation.filter(function(x) { return x !== p; }); });
+});
+
+if (jambusters.length > 0) { assignments.Jambuster = jambusters; }
+
+formationsActives.forEach(function(f) {
+if (!assignments['Formation_' + f.process]) assignments['Formation_' + f.process] = [];
+var entry = f.trainee + (f.instructeur ? ' (→' + f.instructeur + ')' : '');
+assignments['Formation_' + f.process].push(entry);
+});
+
+planningComplet.push({ periode:periode, staffing:staffingTotal, assignments:assignments });
+});
+
+allProposals.push({
+jour:jour, date:new Date().toLocaleDateString('fr-FR'), planQuotidien:planQuotidien,
+backlogPrisma:backlogPrisma, wipCS:wipCS, wipVareo:wipVareo, wipFinalize:wipFinalize,
+absents:absents, planning:planningComplet, staffing:staffingTotal
+});
+}
+currentProposalIndex = 0;
+currentPlanning = allProposals[0];
+afficherResultats(currentPlanning);
+updateProposalCounter();
+document.getElementById('results').style.display = 'block';
+autoSave();
+}
+
+function previousProposal() { if (currentProposalIndex > 0) { currentProposalIndex--; currentPlanning = allProposals[currentProposalIndex]; afficherResultats(currentPlanning); updateProposalCounter(); } }
+function nextProposal() { if (currentProposalIndex < allProposals.length - 1) { currentProposalIndex++; currentPlanning = allProposals[currentProposalIndex]; afficherResultats(currentPlanning); updateProposalCounter(); } }
+function updateProposalCounter() { document.getElementById('proposalCounter').textContent = 'Proposition ' + (currentProposalIndex + 1) + ' / ' + allProposals.length; }
+
+function afficherResultats(data) {
+var planning = data.planning;
+var staffingTotal = data.staffing;
+var tableDirect = document.getElementById('planningTableDirect');
+var htmlDirect = '<thead><tr><th>Process</th><th>Besoin</th>';
+planning.forEach(function(p) { htmlDirect += '<th>' + p.periode.nom + '<br>' + p.periode.debut + '-' + p.periode.fin + '</th>'; });
+htmlDirect += '</tr></thead><tbody>';
+var directProcesses = ['CS','Vareo','Finalize'];
+directProcesses.forEach(function(process) {
+var logins = staffingTotal[process] || 1;
+htmlDirect += '<tr class="process-' + process.toLowerCase() + '"><td><strong>' + process + '</strong></td><td><strong>' + logins + '</strong></td>';
+planning.forEach(function(p, periodeIdx) {
+var personnes = p.assignments[process] || [];
+var html = personnes.map(function(pers) { return '<span class="person-cell" onclick="onPersonClick(\'' + pers + '\',\'' + process + '\',' + periodeIdx + ',this)">' + pers + '</span>'; }).join(' ');
+htmlDirect += '<td onclick="selectCellForAdd(\'' + process + '\',' + periodeIdx + ')">' + (html || '-') + '</td>';
+});
+htmlDirect += '</tr>';
+});
+if (planning[0].assignments.Jambuster) {
+htmlDirect += '<tr class="process-jambuster"><td><strong>Jambuster</strong></td><td><strong>🚛</strong></td>';
+planning.forEach(function(p) {
+var jbs = p.assignments.Jambuster || [];
+var html = jbs.map(function(pers) { return '<span class="person-cell" style="background:#7c3aed;">' + pers + '</span>'; }).join(' ');
+htmlDirect += '<td>' + (html || '-') + '</td>';
+});
+htmlDirect += '</tr>';
+}
+var formationKeys = Object.keys(planning[0].assignments).filter(function(k) { return k.indexOf('Formation_') === 0; });
+formationKeys.forEach(function(key) {
+var processName = key.replace('Formation_','');
+htmlDirect += '<tr class="process-formation"><td><strong>📚 ' + processName + '</strong></td><td><strong>🎓</strong></td>';
+planning.forEach(function(p) {
+var persons = p.assignments[key] || [];
+var html = persons.map(function(pers) { return '<span class="person-cell trainee">' + pers + '</span>'; }).join(' ');
+htmlDirect += '<td>' + (html || '-') + '</td>';
+});
+htmlDirect += '</tr>';
+});
+htmlDirect += '</tbody>';
+tableDirect.innerHTML = htmlDirect;
+
+var tableIndirect = document.getElementById('planningTableIndirect');
+var htmlIndirect = '<thead><tr><th>Task</th><th>Staffing</th>';
+planning.forEach(function(p) { htmlIndirect += '<th>' + p.periode.nom + '<br>' + p.periode.debut + '-' + p.periode.fin + '</th>'; });
+htmlIndirect += '</tr></thead><tbody>';
+['Lamination','IX','IJ','PS','QC','WS'].forEach(function(process) {
+var staffCount = staffingTotal[process] || 1;
+htmlIndirect += '<tr><td><strong>' + process + '</strong></td><td><strong>' + staffCount + ' pers</strong></td>';
+planning.forEach(function(p, periodeIdx) {
+var personnes = p.assignments[process] || [];
+var html = personnes.map(function(pers) { return '<span class="person-cell" onclick="onPersonClick(\'' + pers + '\',\'' + process + '\',' + periodeIdx + ',this)">' + pers + '</span>'; }).join(' ');
+htmlIndirect += '<td onclick="selectCellForAdd(\'' + process + '\',' + periodeIdx + ')">' + (html || '-') + '</td>';
+});
+htmlIndirect += '</tr>';
+});
+htmlIndirect += '</tbody>';
+tableIndirect.innerHTML = htmlIndirect;
+document.getElementById('results').scrollIntoView({ behavior:'smooth' });
+}
+
+function activateAddMode() { addMode = !addMode; deleteMode = false; moveMode = false; swapMode = false; swapModeType = null; swapSelection = { first:null, second:null }; document.getElementById('swapMenu').classList.remove('active'); if (addMode) alert('➕ Mode Ajouter activé.\nCliquez sur une cellule.'); else alert('❌ Mode désactivé.'); }
+function activateDeleteMode() { deleteMode = !deleteMode; addMode = false; moveMode = false; swapMode = false; swapModeType = null; swapSelection = { first:null, second:null }; document.getElementById('swapMenu').classList.remove('active'); if (deleteMode) alert('🗑️ Mode Effacer activé.\nCliquez sur une personne.'); else alert('❌ Mode désactivé.'); }
+function activateMoveMode() { moveMode = !moveMode; addMode = false; deleteMode = false; swapMode = false; swapModeType = null; swapSelection = { first:null, second:null }; document.getElementById('swapMenu').classList.remove('active'); if (moveMode) alert('➡️ Mode Déplacer activé.\nCliquez sur une personne.'); else alert('❌ Mode désactivé.'); }
+function toggleSwapMenu() { var menu = document.getElementById('swapMenu'); menu.classList.toggle('active'); if (menu.classList.contains('active')) { addMode = false; deleteMode = false; moveMode = false; } else { swapMode = false; swapModeType = null; swapSelection = { first:null, second:null }; } }
+function setSwapMode(type) { swapModeType = type; swapMode = true; swapSelection = { first:null, second:null }; document.getElementById('swapMenu').classList.remove('active'); var msg = type === 'local' ? 'cellule' : type === 'process' ? 'process' : 'global'; alert('🔄 Swap ' + msg + ' activé.\nCliquez sur 2 personnes.'); }
+
+function selectCellForAdd(process, periodeIdx) {
+if (!addMode || !currentPlanning) return;
+addSelection = { process:process, periodeIdx:periodeIdx };
+var absents = currentPlanning.absents;
+var dispo = equipe.filter(function(p) { return absents.indexOf(p) === -1; });
+var select = document.getElementById('personToAdd');
+select.innerHTML = '<option value="">-- Sélectionnez --</option>';
+dispo.forEach(function(p) { select.innerHTML += '<option value="' + p + '">' + p + '</option>'; });
+document.getElementById('addInfo').textContent = 'Ajouter à ' + process + ' (P' + (periodeIdx + 1) + ')';
+document.getElementById('addModal').classList.add('active');
+}
+
+function closeAddModal() { document.getElementById('addModal').classList.remove('active'); addSelection = null; }
+
+function executeAdd() {
+if (!addSelection || !currentPlanning) return;
+var person = document.getElementById('personToAdd').value;
+if (!person) { alert('⚠️ Sélectionnez !'); return; }
+var arr = currentPlanning.planning[addSelection.periodeIdx].assignments[addSelection.process];
+if (!arr) { currentPlanning.planning[addSelection.periodeIdx].assignments[addSelection.process] = [person]; }
+else if (arr.indexOf(person) === -1) { arr.push(person); }
+closeAddModal(); afficherResultats(currentPlanning); addMode = false;
+}
+
+function onPersonClick(personne, process, periodeIdx, el) {
+if (!currentPlanning) return;
+if (deleteMode) {
+var arr = currentPlanning.planning[periodeIdx].assignments[process];
+var idx = arr.indexOf(personne); if (idx !== -1) { arr.splice(idx, 1); afficherResultats(currentPlanning); } deleteMode = false;
+} else if (moveMode) {
+moveSelection = { personne:personne, process:process, periodeIdx:periodeIdx };
+document.getElementById('moveInfo').textContent = 'Déplacer ' + personne + ' depuis ' + process + ' (P' + (periodeIdx+1) + ')';
+document.getElementById('moveModal').classList.add('active');
+} else if (swapMode && swapModeType) { selectPersonForSwap(personne, process, periodeIdx, el); }
+}
+
+function selectPersonForSwap(personne, process, periodeIdx, el) {
+if (!swapSelection.first) { swapSelection.first = { personne:personne, process:process, periodeIdx:periodeIdx }; el.classList.add('person-selected'); }
+else if (!swapSelection.second) {
+swapSelection.second = { personne:personne, process:process, periodeIdx:periodeIdx };
+var first = swapSelection.first, second = swapSelection.second;
+var planning = currentPlanning.planning;
+if (swapModeType === 'local') {
+var a1 = planning[first.periodeIdx].assignments[first.process];
+var a2 = planning[second.periodeIdx].assignments[second.process];
+var i1 = a1.indexOf(first.personne), i2 = a2.indexOf(second.personne);
+if (i1 !== -1 && i2 !== -1) { a1[i1] = second.personne; a2[i2] = first.personne; }
+} else if (swapModeType === 'process') {
+planning.forEach(function(p) { var arr = p.assignments[first.process]; if (!arr) return; var idx1 = arr.indexOf(first.personne), idx2 = arr.indexOf(second.personne); if (idx1 !== -1 && idx2 !== -1) { var t = arr[idx1]; arr[idx1] = arr[idx2]; arr[idx2] = t; } else if (idx1 !== -1) { arr[idx1] = second.personne; } else if (idx2 !== -1) { arr[idx2] = first.personne; } });
+} else if (swapModeType === 'global') {
+planning.forEach(function(p) { Object.keys(p.assignments).forEach(function(proc) { var arr = p.assignments[proc]; if (!arr || !Array.isArray(arr)) return; var idx1 = arr.indexOf(first.personne), idx2 = arr.indexOf(second.personne); if (idx1 !== -1 && idx2 !== -1) { var t = arr[idx1]; arr[idx1] = arr[idx2]; arr[idx2] = t; } else if (idx1 !== -1) { arr[idx1] = second.personne; } else if (idx2 !== -1) { arr[idx2] = first.personne; } }); });
+}
+afficherResultats(currentPlanning); swapSelection = { first:null, second:null }; swapMode = false; swapModeType = null;
+}
+}
+
+function closeMoveModal() { document.getElementById('moveModal').classList.remove('active'); moveSelection = null; }
+
+function executeMove() {
+if (!moveSelection || !currentPlanning) return;
+var targetProcess = document.getElementById('targetProcess').value;
+var targetPeriode = parseInt(document.getElementById('targetPeriode').value);
+if (!targetProcess) { alert('⚠️ Sélectionnez un poste !'); return; }
+var planning = currentPlanning.planning;
+var src = planning[moveSelection.periodeIdx].assignments[moveSelection.process];
+var idx = src.indexOf(moveSelection.personne); if (idx !== -1) src.splice(idx, 1);
+var tgt = planning[targetPeriode].assignments[targetProcess];
+if (!tgt) { planning[targetPeriode].assignments[targetProcess] = [moveSelection.personne]; }
+else if (tgt.indexOf(moveSelection.personne) === -1) { tgt.push(moveSelection.personne); }
+closeMoveModal(); afficherResultats(currentPlanning); moveMode = false;
+}
+
+function savePlanning() {
+if (!currentPlanning) { alert('⚠️ Aucun planning !'); return; }
+var key = currentPlanning.jour;
+weekHistory[key] = currentPlanning;
+localStorage.setItem('weekHistory_night', JSON.stringify(weekHistory));
+alert('✅ Planning sauvegardé : ' + key);
+loadHistory();
+}
+
+function loadHistory() {
+var grid = document.getElementById('historyGrid');
+if (Object.keys(weekHistory).length === 0) { grid.innerHTML = '<p style="font-size:0.82em;">Aucun planning sauvegardé.</p>'; return; }
+grid.innerHTML = '';
+Object.keys(weekHistory).forEach(function(key) {
+var p = weekHistory[key];
+var div = document.createElement('div');
+div.className = 'history-card';
+div.onclick = function() { loadPlanningFromHistory(key); };
+div.innerHTML = '<h3>' + key + '</h3><p>' + p.date + '</p><p><strong>Plan:</strong> ' + p.planQuotidien + ' | <strong>WIP:</strong> ' + (p.wipCS + p.wipVareo + p.wipFinalize) + '</p><p style="margin-top:4px;color:#c7d2fe;font-size:0.75em;">Cliquez pour afficher</p>';
+grid.appendChild(div);
+});
+}
+
+function loadPlanningFromHistory(key) {
+var p = weekHistory[key];
+if (!p) return;
+currentPlanning = p;
+afficherResultats(p);
+document.getElementById('results').style.display = 'block';
+var modal = document.getElementById('planningModal');
+document.getElementById('modalTitle').textContent = p.jour;
+document.getElementById('modalPlanningContent').innerHTML = '<div class="planning-container"><div class="planning-section direct"><h3>🔵 DIRECT</h3><table class="planning-table">' + document.getElementById('planningTableDirect').innerHTML + '</table></div><div class="planning-section indirect"><h3>🟡 INDIRECT</h3><table class="planning-table">' + document.getElementById('planningTableIndirect').innerHTML + '</table></div></div>';
+modal.classList.add('active');
+}
+
+function closePlanningModal() { document.getElementById('planningModal').classList.remove('active'); }
+
+function resetAll() {
+if (!confirm('⚠️ Voulez-vous vraiment tout effacer ?')) return;
+localStorage.removeItem('autoSave_night');
+document.getElementById('wipCS').value = '';
+document.getElementById('wipVareo').value = '';
+document.getElementById('wipFinalize').value = '';
+document.getElementById('wipBacklog').value = '';
+document.getElementById('inputTPH').value = '75';
+document.getElementById('inputAASSOP').value = '';
+document.getElementById('livresFinalises').value = '';
+document.getElementById('livresPrinted').value = '0';
+document.getElementById('bufferFinalize').value = '0';
+document.getElementById('syncModInput').value = '';
+document.getElementById('supportLeadMode').value = 'non'; toggleSupportLead();
+document.getElementById('jambMode').value = 'non'; toggleJambuster();
+document.getElementById('formationMode').value = 'non'; toggleFormation();
+equipe.forEach(function(p) { var cb = document.getElementById('absent_' + p); if (cb) cb.checked = false; });
+document.getElementById('results').style.display = 'none';
+document.getElementById('formationList').innerHTML = ''; formationsList = [];
+document.getElementById('renfortList').innerHTML = ''; renfortsList = [];
+currentPlanning = null; allProposals = []; currentProposalIndex = 0;
+updateDashboardAAS(); updateDashWIP(); updateDashBacklog(); updateVolumeFait(); updateCalculs();
+document.getElementById('dashPlanPresence').textContent = '0';
+document.getElementById('dashPlanSOP').textContent = '0';
+document.getElementById('dashReste').textContent = '0';
+alert('✅ Tout effacé !');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+initTheme();
+loadTeamFromURL();
+document.getElementById('jourDetecte').textContent = detectJour();
+initAbsenceGrid();
+initPrinters();
+updateDashboardAAS();
+updateVolumeFait();
+updateDashWIP();
+updateDashBacklog();
+updateCalculs();
+updateTempsEcoule();
+loadHistory();
+autoRestore();
+setInterval(updateTempsEcoule, 60000);
+document.getElementById('livresFinalises').addEventListener('input', function() { updateVolumeFait(); autoSave(); });
+if (equipe.length > 0) {
+alert('✅ Équipe chargée avec succès !\n\n👥 ' + equipe.length + ' personnes disponibles\n📅 ' + detectJour() + '\n\nBon shift !');
+} else {
+var goToSkill = confirm('⚠️ Aucune équipe chargée.\n\nVoulez-vous aller dans la Skill Matrix pour charger l\'équipe ?');
+if (goToSkill) { window.location.href = 'skill_matrix_night.html'; }
+}
+});
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

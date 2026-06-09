@@ -1,0 +1,9 @@
+CS:Abdbouno,Bahoyahi,Benaliln,Bouchkra,Dchakima,Doumbita,Estheama,Ghenaiec,Grimbee,Kevifill,Khiezens,Ldiofato,Makoufab,Megrimbe,Mounissi,Mrtacha,Nmlinde,Phamhanr,Rmadiarr,Royerdav
+Vareo:Abdbouno,Bahoyahi,Benaliln,Bouchkra,Dchakima,Doumbita,Estheama,Ghenaiec,Grimbee,Kevifill,Khiezens,Ldiofato,Makoufab,Megrimbe,Mounissi,Mrtacha,Nmlinde,Phamhanr,Rmadiarr,Royerdav
+Finalize:Abdbouno,Bahoyahi,Benaliln,Bouchkra,Dchakima,Doumbita,Estheama,Ghenaiec,Grimbee,Kevifill,Khiezens,Ldiofato,Makoufab,Megrimbe,Mounissi,Mrtacha,Nmlinde,Phamhanr,Rmadiarr,Royerdav
+Lamination:Abdbouno,Bahoyahi,Benaliln,Bouchkra,Dchakima,Doumbita,Estheama,Ghenaiec,Grimbee,Kevifill,Khiezens,Ldiofato,Makoufab,Megrimbe,Mounissi,Mrtacha,Nmlinde,Phamhanr,Rmadiarr,Royerdav
+WS:Abdbouno,Bahoyahi,Benaliln,Bouchkra,Dchakima,Doumbita,Estheama,Ghenaiec,Grimbee,Kevifill,Khiezens,Ldiofato,Makoufab,Megrimbe,Mounissi,Mrtacha,Nmlinde,Phamhanr,Rmadiarr,Royerdav
+IX:Abdbouno,Bouchkra,Doumbita,Estheama,Grimbee,Ldiofato,Nmlinde,Phamhanr
+IJ:Estheama,Ghenaiec,Kevifill,Mrtacha,Phamhanr,Royerdav
+PS:Bahoyahi,Doumbita,Grimbee,Kevifill,Ldiofato,Makoufab,Mounissi,Mrtacha,Nmlinde
+QC:
